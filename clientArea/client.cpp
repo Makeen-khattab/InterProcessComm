@@ -42,6 +42,11 @@ int main(int argc, char *argv[])
 
 {
 /*
+Length of recieved message
+*/
+unsigned char stringLength=0;
+
+/*
 Creating a Struct that carries information about the server.
 */    
     struct hostent* server;
@@ -169,7 +174,7 @@ And checking the status
 */
 std::cout<<"----------------------------------"<< std::endl<<std::endl;
 std::cout <<"Server: "<<std::flush;
-if (read(sockfd, &readFromServer[0], MAX_BUFFER-1) < 0)
+if ((stringLength=read(sockfd, &readFromServer[0], MAX_BUFFER-1)) < 0)
 
 {
 
@@ -178,22 +183,20 @@ std::cerr << "read from socket failed" << std::endl;
 return 5;
 
 }
+
+/*
+As when the string is transmitted from the service to the client
+the handshaking process to alert the client that the string is finished is the
+\0 so we recieve a string without it's terminator
+*/
+readFromServer[stringLength]='\0';
+
 /*
 Displaying the server message
 */
 std::cout<<readFromServer << std::endl;
 
-/* 
-*
-*
-*
-Ending the communication between the Server
-and the client
-*
-*
-*
-*/
-if(readFromServer.compare("terminateComm ")==0)
+if(strcmp((readFromServer.c_str()),("terminateComm"))== 0)
 {
     std::cout<<"----------------------------------"<< std::endl;
     std::cout<<"---  End of the Communication  ---"<< std::endl;
@@ -213,7 +216,7 @@ std::string writeBuffer (MAX_BUFFER, 0);
 /*
 Taking a string as an input from the user
 */
-std::cout << "Client message to be sent: ";
+std::cout << "Client: ";
 getline(std::cin, writeBuffer);
 std::cout<<std::endl;
 std::cout<<"----------------------------------"<< std::endl<<std::endl;

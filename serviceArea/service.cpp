@@ -46,7 +46,6 @@ int main(int argc, char *argv[])
 
 int incomingSock;
 
-unsigned char oneTimeOnly=1;
 
 /*
 Creating a socket Identified for Inter-Process Communication
@@ -152,22 +151,15 @@ messageByServer.assign("Connected!");
 
 std::cout<<"----------------------------------"<< std::endl;
 std::cout<<"--- Start of the Communication ---"<< std::endl;
-std::cout<<"----------------------------------"<< std::endl;
+std::cout<<"----------------------------------"<< std::endl<<std::endl;;
 
-unsigned char firstEntery=0;
+
+ std::cout<<"----------------------------------"<< std::endl<<std::endl;
+ std::cout << "Server: "<<messageByServer<<std::endl;
 
 
 while(1)
 {
-/*
-If connected Successfully
-The service will Inform the User
-*/
-while(!firstEntery++)
-{
-    std::cout<<"----------------------------------"<< std::endl<<std::endl;
-    std::cout << "server: "<<messageByServer<<std::endl;
-}
 
 write(incomingSock, messageByServer.c_str() , messageByServer.length());
 
@@ -190,7 +182,7 @@ std::string messageFromClient (MAX_BUFFER, 0);
 /*
 Checking the status of the message sent  by client
 */
-std::cout << "Client-mess: "<<std::flush ;
+std::cout << "Client: "<<std::flush;
 if (read(incomingSock, &messageFromClient[0], MAX_BUFFER-1) < 0)
 {
 std::cerr << "read from socket error" << std::endl;
@@ -200,15 +192,16 @@ std::cerr << "read from socket error" << std::endl;
 /*
 Displaying the Client message
 */
-std::cout<< messageFromClient << std::endl;
+std::cout<< messageFromClient << std::endl<<std::endl;
 
 /*
 Taking another input message by Server to be sent
 */
 std::cout<<"----------------------------------"<< std::endl<<std::endl;
-std::cout << "server: ";
+std::cout<<"----------------------------------"<< std::endl<<std::endl;
+std::cout << "Server: ";
 getline(std::cin,messageByServer);
-std::cout<<std::endl;
+
 
 }
 
